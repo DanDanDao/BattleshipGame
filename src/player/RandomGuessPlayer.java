@@ -2,50 +2,66 @@ package player;
 
 import java.util.Scanner;
 import world.World;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Random guess player (task A).
- * Please implement this class.
- *
- * @author Youhan Xia, Jeffrey Chan
+ * @authors Liam Jeynes s3544919, Viet Quang Dao s3687103
  */
-public class RandomGuessPlayer implements Player{
-
-    @Override
+public class RandomGuessPlayer extends Guesser implements Player{
+	public List<Guess> guesses;
+	private static final int NUM_OF_FLEET_COORDINATES = 19;
+   
+   @Override
     public void initialisePlayer(World world) {
-        // To be implemented.
-    } // end of initialisePlayer()
+        this.world = world;
+		this.guesses = new ArrayList<>();
+		this.hits = new ArrayList<>();
+		initGuesses(guesses);
+    } 
 
     @Override
     public Answer getAnswer(Guess guess) {
-        // To be implemented.
-
-        // dummy return
-        return null;
-    } // end of getAnswer()
+		Answer answer = new Answer();
+		if (super.resultOfGuess(guess, answer))
+			answer.isHit = true;
+		else
+			answer.isHit = false;
+		return answer;
+    }
 
 
     @Override
     public Guess makeGuess() {
-        // To be implemented.
+		Random rand = new Random();
+		int index = rand.nextInt(1000)%guesses.size();
+        return guesses.remove(index);
+    } 
 
-        // dummy return
-        return null;
-    } // end of makeGuess()
-
-
+	// Empty as Random Guess player does not require any updating
+	// as the result of a hit does not affect the algorithm
     @Override
     public void update(Guess guess, Answer answer) {
-        // To be implemented.
-    } // end of update()
-
+      
+    } 
 
     @Override
     public boolean noRemainingShips() {
-        // To be implemented.
+       return hits.size() >= NUM_OF_FLEET_COORDINATES;
+    } 
+	
+	// Initialises guesses used in algorithm
+	private void initGuesses(List<Guess> list){
+		for(int row = 0; row<world.numRow; ++row){
+			for(int column = 0; column<world.numColumn; ++column){
+				Guess guess = new Guess();
+				guess.row = row;
+				guess.column = column;
+				list.add(guess);
+			}
+		}
+	}
 
-        // dummy return
-        return true;
-    } // end of noRemainingShips()
-
-} // end of class RandomGuessPlayer
+} 
