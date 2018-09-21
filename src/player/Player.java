@@ -1,6 +1,5 @@
 package player;
 
-import java.util.Scanner;
 import world.World;
 
 /**

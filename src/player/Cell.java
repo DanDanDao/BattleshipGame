@@ -4,6 +4,7 @@ import world.World;
 import world.World.Coordinate;
 import java.util.List;
 import java.util.ArrayList;
+import ship.Configuration;
 
 /**
  * Class to store the state of the opponents world i.e. cells
@@ -12,8 +13,32 @@ import java.util.ArrayList;
 public class Cell{
 	private World world = new World();
 	public enum CellState{unchecked, possible, hit, miss};
-	protected CellState[][] cell = null;
+	public CellState[][] cell = null;
 	protected List<Coordinate> possibleTargets = new ArrayList<>();
+	public List<Configuration> shipCounters = new ArrayList<>();
+	protected Configuration aircraftCarrierSize;
+	protected Configuration cruiserSize;
+	protected Configuration frigateSize;
+	protected Configuration patrolCraftSize;
+	protected Configuration subSize;
+	public Configuration total;
+	public Configuration[] ships = null;
+	
+	// initializes all ship counters
+	protected void initShipCounters(){
+		total = new Configuration(numRows, numColumns, 0);
+		aircraftCarrierSize = new Configuration(numRows, numColumns, 6);
+		cruiserSize = new Configuration(numRows, numColumns, 4);
+		frigateSize = new Configuration(numRows, numColumns, 4);
+		patrolCraftSize = new Configuration(numRows, numColumns, 2);
+		subSize = new Configuration(numRows, numColumns, 3);
+		ships = new Configuration[]{aircraftCarrierSize, cruiserSize, frigateSize, patrolCraftSize, subSize};
+		
+		// adds all ships into shipCounters array list
+		for(int i=0; i<ships.length; i++)
+			shipCounters.add(ships[i]);
+	}
+	
 	protected int numRows, numColumns;
 	
 	public Cell(int numRow, int numColumn){
@@ -32,7 +57,7 @@ public class Cell{
 		}
 	}
 	
-	public void updateCell(CellState state, int row, int column){
+	protected void updateCell(CellState state, int row, int column){
 		cell[row][column] = state;
 		if(state == CellState.hit)
 			determineTargets(row, column);
@@ -66,6 +91,16 @@ public class Cell{
 			
 			cell[row][column] = CellState.possible;
 			possibleTargets.add(co);	
+		}
+	}
+	
+	// Method to reset all possible targets
+	protected void resetPossibleTargets(){
+		for(int row=numRows-1; row>=0; row--){
+			for(int col=0; col<numColumns; col++){
+				if(cell[row][col] == CellState.possible)
+					cell[row][col] = CellState.unchecked;
+			}
 		}
 	}
 	

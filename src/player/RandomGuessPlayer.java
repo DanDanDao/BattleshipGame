@@ -1,10 +1,11 @@
 package player;
 
-import java.util.Scanner;
 import world.World;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
+import player.Cell.CellState;
+import player.Cell;
 
 /**
  * Random guess player (task A).
@@ -17,6 +18,7 @@ public class RandomGuessPlayer extends Guesser implements Player{
    @Override
     public void initialisePlayer(World world) {
         this.world = world;
+		this.cell = new Cell(world.numRow, world.numColumn);
 		this.guesses = new ArrayList<>();
 		this.hits = new ArrayList<>();
 		initGuesses(guesses);
@@ -40,11 +42,14 @@ public class RandomGuessPlayer extends Guesser implements Player{
         return guesses.remove(index);
     } 
 
-	// Empty as Random Guess player does not require any updating
-	// as the result of a hit does not affect the algorithm
+	// Updates the state of the cells
+	// However has zero affect on the RandomGuessPlayer algorithm
     @Override
     public void update(Guess guess, Answer answer) {
-      
+      if(answer.isHit)
+			cell.updateCell(CellState.hit, guess.row, guess.column);
+		else
+			cell.updateCell(CellState.miss, guess.row, guess.column);
     } 
 
     @Override

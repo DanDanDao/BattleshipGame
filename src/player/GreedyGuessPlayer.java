@@ -1,6 +1,5 @@
 package player;
 
-import java.util.Scanner;
 import world.World;
 import world.World.Coordinate;
 import java.util.ArrayList;

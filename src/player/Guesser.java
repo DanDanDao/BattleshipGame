@@ -33,7 +33,7 @@ public abstract class Guesser implements Player{
 	}
 	
 	// Method to check if the coordinates are the same i.e. the guess hits a ship
-	public boolean sameAs(Coordinate co, Guess guess){
+	protected boolean sameAs(Coordinate co, Guess guess){
         return co.row == guess.row && co.column == guess.column;
     }
 	
@@ -53,7 +53,7 @@ public abstract class Guesser implements Player{
 		return true;
 	}
 	
-    public Guess createGuess(Coordinate co){
+    protected Guess createGuess(Coordinate co){
         Guess guess = new Guess();
         guess.row = co.row;
         guess.column = co.column;

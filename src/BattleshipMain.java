@@ -35,8 +35,8 @@ public class BattleshipMain {
                 return new GreedyGuessPlayer();
             case "prob":
                 return new ProbabilisticGuessPlayer();
-            case "sample":
-                return new SampleRandomGuessPlayer();
+           // case "sample":
+             //   return new SampleRandomGuessPlayer();
             default:
                 return null;
         }
