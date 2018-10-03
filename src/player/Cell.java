@@ -26,12 +26,12 @@ public class Cell{
 	
 	// initializes all ship counters
 	protected void initShipCounters(){
-		total = new Configuration(numRows, numColumns, 0);
-		aircraftCarrierSize = new Configuration(numRows, numColumns, 6);
-		cruiserSize = new Configuration(numRows, numColumns, 4);
-		frigateSize = new Configuration(numRows, numColumns, 4);
-		patrolCraftSize = new Configuration(numRows, numColumns, 2);
-		subSize = new Configuration(numRows, numColumns, 3);
+		total = new Configuration(numRows, numColumns, 0, 0);
+		aircraftCarrierSize = new Configuration(numRows, numColumns, 3, 2);
+		cruiserSize = new Configuration(numRows, numColumns, 2, 2);
+		frigateSize = new Configuration(numRows, numColumns, 4, 1);
+		patrolCraftSize = new Configuration(numRows, numColumns, 2, 1);
+		subSize = new Configuration(numRows, numColumns, 3, 1);
 		ships = new Configuration[]{aircraftCarrierSize, cruiserSize, frigateSize, patrolCraftSize, subSize};
 		
 		// adds all ships into shipCounters array list

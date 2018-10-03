@@ -32,7 +32,7 @@ public class Configurator {
 			for (int y = 0; y < board.rows; ++y) { // for each row
 				for (int x = 0; x < board.columns; ++x) { // for each cell
 					// Count the configurations
-					int configurations = getShipConfigurationCountForOneCell(y, x, board.shipSize);
+					int configurations = getShipConfigurationCountForOneCell(y, x, board.shipLen, board.shipWidth);
 					// Store the result in the board
 					board.configCounts[y][x] = configurations;
 					// Update the total Count for that cell
@@ -55,50 +55,56 @@ public class Configurator {
 		}
 	}
 
-	public int getShipConfigurationCountForOneCell(int column, int row, int shipSize) {
-		int rowMax = getUpperBoundForRow(column, row, shipSize);
-		int rowMin = getLowerBoundForRow(column, row, shipSize);
-		int colMax = getUpperBoundForColumn(column, row, shipSize);
-		int colMin = getLowerBoundForColumn(column, row, shipSize);
+	public int getShipConfigurationCountForOneCell(int column, int row, int shipLen, int shipWidth) {
+		int rowMax = getUpperBoundForRow(column, row, shipLen, shipWidth);
+		int rowMin = getLowerBoundForRow(column, row, shipLen, shipWidth);
+		int colMax = getUpperBoundForColumn(column, row, shipLen, shipWidth);
+		int colMin = getLowerBoundForColumn(column, row, shipLen, shipWidth);
 		// calculate the total number of cells available in the row and col
 		int rowRange = rowMax - rowMin - 1;
 		int colRange = colMax - colMin - 1;
 		// calculate how many ways a ship can be placed in that space
-		int rowConfigurations = max(0, 1 + rowRange - shipSize);
-		int colConfigurations = max(0, 1 + colRange - shipSize);
-		return rowConfigurations + colConfigurations;
+		if (shipWidth == 1) {
+			int rowConfigurations = max(0, 1 + rowRange - shipLen);
+			int colConfigurations = max(0, 1 + colRange - shipLen);
+			return rowConfigurations + colConfigurations;
+		} else {
+			int rowConfigurations = max(0, 1 + rowRange - shipLen);
+			int colConfigurations = max(0, 1 + colRange - shipLen);
+			return rowConfigurations + colConfigurations;
+		}
 	}
 
-	public int getLowerBoundForColumn(int column, int row, int shipSize) {
-		for (int y = 1; y < shipSize; ++y) { // cells below in the column
+	public int getLowerBoundForColumn(int column, int row, int shipLen, int shipWidth) {
+		for (int y = 1; y < shipLen; ++y) { // cells below in the column
 			if (isOutOfBounds(column, row - y) || isObstacle(column, row - y))
 				return row - y;
 		}
-		return row - shipSize; // Bound is excluded from the range
+		return row - shipLen; // Bound is excluded from the range
 	}
 
-	public int getUpperBoundForColumn(int column, int row, int shipSize) {
-		for (int y = 1; y < shipSize; ++y) { // cells above in the column
+	public int getUpperBoundForColumn(int column, int row, int shipLen, int shipWidth) {
+		for (int y = 1; y < shipLen; ++y) { // cells above in the column
 			if (isOutOfBounds(column, row + y) || isObstacle(column, row + y))
 				return row + y;
 		}
-		return row + shipSize; // Bound is excluded from the range
+		return row + shipLen; // Bound is excluded from the range
 	}
 
-	public int getLowerBoundForRow(int column, int row, int shipSize) {
-		for (int x = 1; x < shipSize; ++x) { // cells below in the row
+	public int getLowerBoundForRow(int column, int row, int shipLen, int shipWidth) {
+		for (int x = 1; x < shipLen; ++x) { // cells below in the row
 			if (isOutOfBounds(column - x, row) || isObstacle(column - x, row))
 				return column - x;
 		}
-		return column - shipSize; // Bound is excluded from the range
+		return column - shipLen; // Bound is excluded from the range
 	}
 
-	public int getUpperBoundForRow(int column, int row, int shipSize) {
-		for (int x = 1; x < shipSize; ++x) { // cells above in the row
+	public int getUpperBoundForRow(int column, int row, int shipLen, int shipWidth) {
+		for (int x = 1; x < shipLen; ++x) { // cells above in the row
 			if (isOutOfBounds(column + x, row) || isObstacle(column + x, row))
 				return column + x;
 		}
-		return column + shipSize; // Bound is excluded from the range
+		return column + shipLen; // Bound is excluded from the range
 	}
 
 	public void updateConfigurationCount(Guess guess) {
@@ -116,52 +122,52 @@ public class Configurator {
 
 	public void updateRowUpper(Guess guess, Configuration shipCounter) {
 		// visit each cell above the shot in the row and recalculate the count
-		for (int x = 1; x < shipCounter.shipSize; ++x) { // start at 1 to avoid
-															// the shot cell
+		for (int x = 1; x < shipCounter.shipLen; ++x) { // start at 1 to avoid
+														// the shot cell
 			// if there is an obstacle, stop
 			if (isOutOfBounds(guess.row, guess.column + x) || isObstacle(guess.row, guess.column + x))
 				break;
 			else // recalculate the configurations
 				shipCounter.configCounts[guess.row][guess.column + x] = getShipConfigurationCountForOneCell(guess.row,
-						guess.column + x, shipCounter.shipSize);
+						guess.column + x, shipCounter.shipLen, shipCounter.shipWidth);
 		}
 	}
 
 	public void updateRowLower(Guess guess, Configuration shipCounter) {
 		// visit each cell below the shot in the row and recalculate the count
-		for (int x = 1; x < shipCounter.shipSize; ++x) {
+		for (int x = 1; x < shipCounter.shipLen; ++x) {
 			// if there is an obstacle, stop
 			if (isOutOfBounds(guess.row, guess.column - x) || isObstacle(guess.row, guess.column - x))
 				break;
 			else // recalculate the configurations
 				shipCounter.configCounts[guess.row][guess.column - x] = getShipConfigurationCountForOneCell(guess.row,
-						guess.column - x, shipCounter.shipSize);
+						guess.column - x, shipCounter.shipLen, shipCounter.shipWidth);
 		}
 	}
 
 	public void updateColumnUpper(Guess guess, Configuration shipCounter) {
 		// visit each cell above the shot in the column and recalculate the
 		// count
-		for (int y = 1; y < shipCounter.shipSize; ++y) {
+		for (int y = 1; y < shipCounter.shipLen; ++y) {
 			// if there is an obstacle, stop
 			if (isOutOfBounds(guess.row + y, guess.column) || isObstacle(guess.row + y, guess.column))
 				break;
 			else // recalculate the configurations
 				shipCounter.configCounts[guess.row + y][guess.column] = getShipConfigurationCountForOneCell(
-						guess.row + y, guess.column, shipCounter.shipSize);
+						guess.row + y, guess.column, shipCounter.shipLen, shipCounter.shipWidth);
 		}
 	}
 
 	public void updateColumnLower(Guess guess, Configuration shipCounter) {
 		// visit each cell below the shot in the column and recalculate the
 		// count
-		for (int y = 1; y < shipCounter.shipSize; ++y) {
+		for (int y = 1; y < shipCounter.shipLen; ++y) {
 			// if there is an obstacle, stop
 			if (isOutOfBounds(guess.row - y, guess.column) || isObstacle(guess.row - y, guess.column))
 				break;
 			else // recalculate the configurations
 				shipCounter.configCounts[guess.row - y][guess.column] = getShipConfigurationCountForOneCell(
-						guess.row - y, guess.column, shipCounter.shipSize);
+						guess.row - y, guess.column, shipCounter.shipLen, shipCounter.shipWidth);
 		}
 	}
 
