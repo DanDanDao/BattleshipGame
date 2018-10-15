@@ -3,8 +3,10 @@ package player;
 import world.World;
 import world.World.Coordinate;
 import java.util.List;
-import java.util.ArrayList;
+
 import ship.Configuration;
+
+import java.util.ArrayList;
 
 /**
  * Class to store the state of the opponents world i.e. cells
@@ -26,12 +28,12 @@ public class Cell{
 	
 	// initializes all ship counters
 	protected void initShipCounters(){
-		total = new Configuration(numRows, numColumns, 0, 0);
-		aircraftCarrierSize = new Configuration(numRows, numColumns, 3, 2);
-		cruiserSize = new Configuration(numRows, numColumns, 2, 2);
-		frigateSize = new Configuration(numRows, numColumns, 4, 1);
-		patrolCraftSize = new Configuration(numRows, numColumns, 2, 1);
-		subSize = new Configuration(numRows, numColumns, 3, 1);
+		total = new Configuration(numRows, numColumns, 0);
+		aircraftCarrierSize = new Configuration(numRows, numColumns, 6);
+		cruiserSize = new Configuration(numRows, numColumns, 4);
+		frigateSize = new Configuration(numRows, numColumns, 4);
+		patrolCraftSize = new Configuration(numRows, numColumns, 2);
+		subSize = new Configuration(numRows, numColumns, 3);
 		ships = new Configuration[]{aircraftCarrierSize, cruiserSize, frigateSize, patrolCraftSize, subSize};
 		
 		// adds all ships into shipCounters array list
@@ -57,14 +59,16 @@ public class Cell{
 		}
 	}
 	
+	// Method to update Cell based on result of guess i.e. hit/miss
 	protected void updateCell(CellState state, int row, int column){
 		cell[row][column] = state;
+		// If guess was a hit, determine targets.
 		if(state == CellState.hit)
 			determineTargets(row, column);
 	}
 	
 	// Method to determine if the cells (north, south, east, west) are unchecked i.e. a possible target
-	private void determineTargets(int row, int column){
+	private void determineTargets(int row, int column) {
 		int temp = row+1;
 		if(temp<numRows)
 			checkCell(temp, column);
@@ -83,8 +87,8 @@ public class Cell{
 	}
 	
 	// Checks if the cell is unchecked i.e. hasn't been guesses/targetted
-	private void checkCell(int row, int column){
-		if(cell[row][column] == CellState.unchecked){
+	private void checkCell(int row, int column) {
+		if(cell[row][column] == CellState.unchecked) {
 			Coordinate co = world.new Coordinate();
 			co.row = row;
 			co.column = column;

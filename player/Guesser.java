@@ -14,6 +14,7 @@ public abstract class Guesser implements Player{
 	protected List<Guess> hits;
 	protected Cell cell;
 	
+	// Method used by getAnswer method to determine the result of the guess
 	protected boolean resultOfGuess(Guess guess, Answer answer){
 		// Loop through ships
 		for(ShipLocation ship: world.shipLocations){
@@ -31,13 +32,13 @@ public abstract class Guesser implements Player{
 		}
 		return false;
 	}
-	
+
 	// Method to check if the coordinates are the same i.e. the guess hits a ship
 	protected boolean sameAs(Coordinate co, Guess guess){
         return co.row == guess.row && co.column == guess.column;
     }
-	
-	// Method to check if the ship hit has been sunk 
+
+	// Method to check if the ship hit has been sunk
 	private boolean isSunk(ShipLocation ship){
 		// Loop through coordinates of the ship
 		for(Coordinate co: ship.coordinates){
@@ -59,6 +60,5 @@ public abstract class Guesser implements Player{
         guess.column = co.column;
         return guess;
     }
-	
 	
 }

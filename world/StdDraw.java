@@ -74,7 +74,7 @@ import javax.swing.KeyStroke;
 /**
  *  The {@code StdDraw} class provides a basic capability for
  *  creating drawings with your programs. It uses a simple graphics model that
- *  allows you to create drawings consisting of points, lines, squares,
+ *  allows you to create drawings consisting of points, lines, squares, 
  *  circles, and other geometric shapes in a window on your computer and
  *  to save the drawings to a file. Standard drawing also includes
  *  facilities for text, color, pictures, and animation, along with
@@ -239,7 +239,7 @@ import javax.swing.KeyStroke;
  *  <li> {@link #setScale(double min, double max)}
  *  </ul>
  *  <p>
- *  The arguments are the coordinates of the minimum and maximum
+ *  The arguments are the coordinates of the minimum and maximum 
  *  <em>x</em>- or <em>y</em>-coordinates that will appear in the canvas.
  *  For example, if you  wish to use the default coordinate system but
  *  leave a small margin, you can call {@code StdDraw.setScale(-.05, 1.05)}.
@@ -303,7 +303,7 @@ import javax.swing.KeyStroke;
  *  <p>
  *  The supported image formats are JPEG and PNG. The filename must have either the
  *  extension .jpg or .png.
- *  We recommend using PNG for drawing that consist solely of geometric shapes and JPEG
+ *  We recommend using PNG for drawing that consist solely of geometric shapes and JPEG 
  *  for drawings that contains pictures.
  *  <p>
  *  <b>Clearing the canvas.</b>
@@ -595,7 +595,7 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 
     // time in milliseconds (from currentTimeMillis()) when we can draw again
     // used to control the frame rate
-    private static long nextDraw = -1;
+    private static long nextDraw = -1;  
 
     // singleton pattern: client can't instantiate
     private StdDraw() { }
@@ -1158,7 +1158,7 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 
 
     /**
-     * Draws a polygon with the vertices
+     * Draws a polygon with the vertices 
      * (<em>x</em><sub>0</sub>, <em>y</em><sub>0</sub>),
      * (<em>x</em><sub>1</sub>, <em>y</em><sub>1</sub>), ...,
      * (<em>x</em><sub><em>n</em>&minus;1</sub>, <em>y</em><sub><em>n</em>&minus;1</sub>).
@@ -1185,7 +1185,7 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
     }
 
     /**
-     * Draws a polygon with the vertices
+     * Draws a polygon with the vertices 
      * (<em>x</em><sub>0</sub>, <em>y</em><sub>0</sub>),
      * (<em>x</em><sub>1</sub>, <em>y</em><sub>1</sub>), ...,
      * (<em>x</em><sub><em>n</em>&minus;1</sub>, <em>y</em><sub><em>n</em>&minus;1</sub>).

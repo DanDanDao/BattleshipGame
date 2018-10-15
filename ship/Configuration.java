@@ -6,12 +6,11 @@ package ship;
  */
  public class Configuration{
 	 public int[][] configCounts;
-	 public int shipLen, shipWidth, rows, columns;
+	 public int shipSize, rows, columns;
 	 
-	 public Configuration(int rows, int columns, int shipLen, int shipWidth){
+	 public Configuration(int rows, int columns, int shipSize){
 		 this.configCounts = new int[rows][columns];
-		 this.shipLen = shipLen;
-		 this.shipWidth = shipWidth;
+		 this.shipSize = shipSize;
 		 this.rows = rows;
 		 this.columns = columns;
 		 initArray();
